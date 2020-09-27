@@ -73,6 +73,7 @@ int main()
     {
         string line, date1, date2, value;
         int cmd;
+        cout << "Entrada: ";
         getline(cin, line);
         stringstream ui(line);
         ui >> cmd;
@@ -90,7 +91,7 @@ int main()
         {
             ui >> date1;
             ui >> date2;
-            cout << "comando -> " << date1 << " - " << date2 << endl;
+            pessoa.consulta_periodo_data(date1, date2);
         }
         else if (cmd == 4)
         {

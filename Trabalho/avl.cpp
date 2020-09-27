@@ -1,8 +1,11 @@
 #include <iostream>
 #include <cstddef>
 #include <queue>
+#include <algorithm>
+#include <cctype>
 #include "avl.h"
 #include "types.h"
+// #include "avl_name.h"
 
 struct Node
 {
@@ -24,25 +27,7 @@ Node *avl_search_cpf(Node *node, string cpf)
         return node;
 }
 
-void avl_search_todas_comece(Node *node, string name, vector<Data> data)
-{
-    if (node == NULL)
-        return ;
-
-    avl_search_todas_comece(node->left, name, data);
-    avl_search_todas_comece(node->right, name, data);
-
-    size_t pos = 0;
-    string line = node->data.name;
-    pos = line.find(name);
-
-    if (pos != line.npos && pos == 0){
-        cout << "Achou" << endl;
-        data.push_back(node->data);
-    }
-}
-
-int balance(Node *node)
+int avl_balance(Node *node)
 {
     if (node == NULL)
         return 0;
@@ -57,17 +42,18 @@ int avl_height(Node *node)
         return node->height;
 }
 
-Node *alocateNode(Data data)
+Node *avl_alocateNode(Data data)
 { //Aloca um nó
     Node *node = new Node;
     node->data = data;
     node->left = NULL;
     node->right = NULL;
     node->height = 1;
+
     return node;
 }
 
-Node *rightRotation(Node *node)
+Node *avl_rightRotation(Node *node)
 { //Rotação Direita
     Node *u = node->left;
     node->left = u->right;
@@ -80,7 +66,7 @@ Node *rightRotation(Node *node)
     return u; // nova raiz
 }
 
-Node *leftRotation(Node *node)
+Node *avl_leftRotation(Node *node)
 { //Rotação Esquerda
     Node *u = node->right;
     node->right = u->left;
@@ -94,23 +80,23 @@ Node *leftRotation(Node *node)
     return u; // nova raiz
 }
 
-Node *fixup_node(Node *node, string cpf)
+Node *avl_fixup_node(Node *node, string cpf)
 {
-    int bal = balance(node); //obtem balanco de node
+    int bal = avl_balance(node); //obtem balanco de node
 
     if (bal < -1 && cpf < node->left->data.cpf)
-        return rightRotation(node);
+        return avl_rightRotation(node);
     else if (bal < -1 && cpf > node->left->data.cpf)
     {
-        node->left = leftRotation(node->left);
-        return rightRotation(node);
+        node->left = avl_leftRotation(node->left);
+        return avl_rightRotation(node);
     }
     else if (bal > 1 && cpf > node->right->data.cpf)
-        return leftRotation(node);
+        return avl_leftRotation(node);
     else if (bal > 1 && cpf < node->right->data.cpf)
     {
-        node->right = rightRotation(node->right);
-        return leftRotation(node);
+        node->right = avl_rightRotation(node->right);
+        return avl_leftRotation(node);
     }
     return node;
 }
@@ -118,7 +104,7 @@ Node *fixup_node(Node *node, string cpf)
 Node *avl_insert(Node *node, Data data)
 {
     if (node == NULL)
-        return alocateNode(data);
+        return avl_alocateNode(data);
     if (data.cpf < node->data.cpf)
         node->left = avl_insert(node->left, data);
     else if (data.cpf > node->data.cpf)
@@ -128,6 +114,6 @@ Node *avl_insert(Node *node, Data data)
 
     //atualiza altura deste ancestral p
     node->height = 1 + std::max(avl_height(node->left), avl_height(node->right));
-    node = fixup_node(node, data.cpf); //Regula o no
+    node = avl_fixup_node(node, data.cpf); //Regula o no
     return node;
 }

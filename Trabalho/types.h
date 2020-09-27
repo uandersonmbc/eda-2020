@@ -5,6 +5,7 @@
 
 using namespace std;
 
+struct Node;
 struct Data
 {
     string cpf;
@@ -12,6 +13,12 @@ struct Data
     string surname;
     string birthday;
     string city;
+};
+
+struct DataNameDate
+{
+    pair<string, string> name;
+    Node *node;
 };
 
 #endif

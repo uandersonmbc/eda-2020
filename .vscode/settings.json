@@ -4,6 +4,9 @@
         "*.ts": "typescript",
         "iosfwd": "cpp",
         "fstream": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "vector": "cpp"
     }
 }
