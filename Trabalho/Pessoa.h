@@ -60,9 +60,11 @@ string Pessoa::addzero(string value)
 {
     int new_value;
     istringstream(value) >> new_value;
+    stringstream ss;
     if (new_value < 10)
     {
-        return "0" + new_value;
+        ss << "0" << new_value;
+        return ss.str();
     }
     return value;
 }
@@ -197,9 +199,21 @@ void Pessoa::consulta_periodo_data(string date_inicial, string date_final)
     vector<DataNameDate> data;
     stringstream ss;
     pair<string, string> dates;
-    dates.first = format_date(date_inicial, 3);
-    dates.second = format_date(date_final, 3);
+
     ss << "Foram encontrados " << data.size() << " pessoas que estão entre esse período [" << date_inicial << " - " << date_final << "]";
+    date_inicial = format_date(date_inicial, 3);
+    date_final = format_date(date_final, 3);
+
+    if (date_inicial < date_final)
+    {
+        dates.first = date_inicial;
+        dates.second = date_final;
+    }
+    else
+    {
+        dates.first = date_final;
+        dates.second = date_inicial;
+    }
     avl_search_periodo_data(avl_data_date, dates, &data);
     print_data_name(data, ss.str());
 }

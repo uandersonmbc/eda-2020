@@ -33,7 +33,6 @@ void avl_search_periodo_data(NodeDate *node, pair<string, string> dates, vector<
 
     if (dates.first <= date && dates.second >= date)
     {
-        // cout << dates.first << " - " << dates.second << " - " << date << endl;
         (*data).push_back(node->data);
     }
 }
