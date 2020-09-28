@@ -35,6 +35,8 @@ public:
 
 vector<string> Pessoa::split(string s, string delimiter)
 {
+
+    // Função pora dividir os dados da linha do arquivo lido
     vector<string> tokens;
 
     size_t pos = 0;
@@ -58,6 +60,7 @@ vector<string> Pessoa::split(string s, string delimiter)
 
 string Pessoa::addzero(string value)
 {
+    // Função para colocar 0 na frente se o valor for menor que 10
     int new_value;
     istringstream(value) >> new_value;
     stringstream ss;
@@ -72,6 +75,8 @@ string Pessoa::addzero(string value)
 void Pessoa::print_data(vector<Data> data, string initial)
 {
     cout << endl;
+
+    // Criação da tabela de informações da pessoa
 
     cout << "Buscando pelo CPF [" << initial << "] " << endl;
 
@@ -90,6 +95,8 @@ void Pessoa::print_data(vector<Data> data, string initial)
 void Pessoa::print_data_name(vector<DataNameDate> data, string initial)
 {
     cout << endl;
+
+    // Criação da tabela de informações da pessoa
 
     cout << initial << endl;
 
@@ -110,21 +117,22 @@ string Pessoa::format_date(string date, int format)
     vector<string> _format;
     stringstream ss;
 
-    // return "A";
-
     _format = split(date, "/");
     if (format == 1)
     {
+        // padrão do americano
         ss << addzero(_format[2]) << addzero(_format[0]) << addzero(_format[1]);
         return ss.str();
     }
     else if (format == 2)
     {
+        // padrão padrão brasileiro com barras
         ss << addzero(_format[1]) << "/" << addzero(_format[0]) << "/" << addzero(_format[2]);
         return ss.str();
     }
     else
     {
+        // padrão padrão brasileiro sem barras
         ss << addzero(_format[2]) << addzero(_format[1]) << addzero(_format[0]);
         return ss.str();
     }
@@ -181,6 +189,7 @@ void Pessoa::consulta_unica(string cpf)
 {
     vector<Data> data;
     Node *result = avl_search_cpf(avl_data, cpf);
+    // padrão
     data.push_back(result->data);
     print_data(data, result->data.cpf);
 }
@@ -188,6 +197,7 @@ void Pessoa::consulta_unica(string cpf)
 void Pessoa::consulta_todas_comece(string name)
 {
     vector<DataNameDate> data;
+    // chamando a função de busca por string informada pelo usuário
     avl_search_todas_comece(avl_data_name, name, &data);
     stringstream ss;
     ss << "Foram encontrados " << data.size() << " pessoas que começam com [" << name << "]";
@@ -196,14 +206,17 @@ void Pessoa::consulta_todas_comece(string name)
 
 void Pessoa::consulta_periodo_data(string date_inicial, string date_final)
 {
+    // declarando as várias locais da função
     vector<DataNameDate> data;
     stringstream ss;
     pair<string, string> dates;
 
+    // criando o titulo da tabela
     ss << "Foram encontrados " << data.size() << " pessoas que estão entre esse período [" << date_inicial << " - " << date_final << "]";
     date_inicial = format_date(date_inicial, 3);
     date_final = format_date(date_final, 3);
 
+    // verifica se as datas não foram colocadas invertidas
     if (date_inicial < date_final)
     {
         dates.first = date_inicial;
