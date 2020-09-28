@@ -4,7 +4,7 @@
 
 struct NodeDate;
 
-void avl_search_todas_comece(NodeDate *node, string name, vector<DataNameDate> *data);
+void avl_search_periodo_data(NodeDate *node, pair<string, string> dates, vector<DataNameDate> *data);
 
 int avl_date_balance(NodeDate *node);
 int avl_date_height(NodeDate *node);

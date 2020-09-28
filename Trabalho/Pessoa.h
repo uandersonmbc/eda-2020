@@ -9,7 +9,7 @@ using namespace std;
 class Pessoa
 {
 private:
-    /* data */
+    /* declarações de métodos e váriaveis privadas */
     Node *avl_data = NULL;
     NodeName *avl_data_name = NULL;
     NodeDate *avl_data_date = NULL;
@@ -19,19 +19,19 @@ private:
 
     vector<string> split(string s, string delimiter);
     string addzero(string value);
-    void print_data(vector<Data> data, string initial, int v);
-    void print_data_name(vector<DataNameDate> data, string initial, int v);
+    string format_date(string date, int format);
+    void print_data(vector<Data> data, string initial);
+    void print_data_name(vector<DataNameDate> data, string initial);
 
 public:
-    // Pessoa();
-    // ~Pessoa();
-
+    // declaração dos métodos público
     void insert_data(string file);
-
     void consulta_unica(string cpf);
     void consulta_todas_comece(string name);
     void consulta_periodo_data(string date_initial, string date_final);
 };
+
+// Private
 
 vector<string> Pessoa::split(string s, string delimiter)
 {
@@ -62,20 +62,16 @@ string Pessoa::addzero(string value)
     istringstream(value) >> new_value;
     if (new_value < 10)
     {
-        return "0" + value;
+        return "0" + new_value;
     }
     return value;
 }
 
-void Pessoa::print_data(vector<Data> data, string initial, int v)
+void Pessoa::print_data(vector<Data> data, string initial)
 {
     cout << endl;
-    if (v == 1)
-        cout << "Buscando pelo CPF [" << initial << "] " << endl;
-    else if (v == 2)
-        cout << "Pessoas que começam com [" << initial << "] " << endl;
-    else
-        cout << "Buscando pessoal por periódo de datas [" << initial << "] " << endl;
+
+    cout << "Buscando pelo CPF [" << initial << "] " << endl;
 
     cout << "---------------------------------------------------------------------------------------------" << endl;
     cout << "| CPF            | Nome       | Sobrenome  | Data de Nascimento | Cidade                    |" << endl;
@@ -89,15 +85,11 @@ void Pessoa::print_data(vector<Data> data, string initial, int v)
     cout << "---------------------------------------------------------------------------------------------" << endl;
 }
 
-void Pessoa::print_data_name(vector<DataNameDate> data, string initial, int v)
+void Pessoa::print_data_name(vector<DataNameDate> data, string initial)
 {
     cout << endl;
-    if (v == 1)
-        cout << "Buscando pelo CPF [" << initial << "] " << endl;
-    else if (v == 2)
-        cout << "Pessoas que começam com [" << initial << "] " << endl;
-    else
-        cout << "Buscando pessoal por periódo de datas [" << initial << "] " << endl;
+
+    cout << initial << endl;
 
     cout << "---------------------------------------------------------------------------------------------" << endl;
     cout << "| CPF            | Nome       | Sobrenome  | Data de Nascimento | Cidade                    |" << endl;
@@ -110,6 +102,33 @@ void Pessoa::print_data_name(vector<DataNameDate> data, string initial, int v)
     }
     cout << "---------------------------------------------------------------------------------------------" << endl;
 }
+
+string Pessoa::format_date(string date, int format)
+{
+    vector<string> _format;
+    stringstream ss;
+
+    // return "A";
+
+    _format = split(date, "/");
+    if (format == 1)
+    {
+        ss << addzero(_format[2]) << addzero(_format[0]) << addzero(_format[1]);
+        return ss.str();
+    }
+    else if (format == 2)
+    {
+        ss << addzero(_format[1]) << "/" << addzero(_format[0]) << "/" << addzero(_format[2]);
+        return ss.str();
+    }
+    else
+    {
+        ss << addzero(_format[2]) << addzero(_format[1]) << addzero(_format[0]);
+        return ss.str();
+    }
+}
+
+// Puclic
 
 void Pessoa::insert_data(string file)
 {
@@ -137,13 +156,15 @@ void Pessoa::insert_data(string file)
                 data.cpf = data_local[0];
                 data.name = data_local[1];
                 data.surname = data_local[2];
-                data.birthday = data_local[3];
+                data.birthday = format_date(data_local[3], 2);
                 data.city = data_local[4];
                 avl_data = avl_insert(avl_data, data);
                 result = avl_search_cpf(avl_data, data_local[0]);
                 par.first = data_local[1];
                 par.second = data_local[0];
                 avl_data_name = avl_name_insert(avl_data_name, par, result);
+                par.first = format_date(data_local[3], 1);
+                avl_data_date = avl_date_insert(avl_data_date, par, result);
             }
             linha++;
         }
@@ -159,19 +180,28 @@ void Pessoa::consulta_unica(string cpf)
     vector<Data> data;
     Node *result = avl_search_cpf(avl_data, cpf);
     data.push_back(result->data);
-    print_data(data, result->data.cpf, 1);
+    print_data(data, result->data.cpf);
 }
 
 void Pessoa::consulta_todas_comece(string name)
 {
     vector<DataNameDate> data;
     avl_search_todas_comece(avl_data_name, name, &data);
-    print_data_name(data, name, 2);
+    stringstream ss;
+    ss << "Foram encontrados " << data.size() << " pessoas que começam com [" << name << "]";
+    print_data_name(data, ss.str());
 }
 
 void Pessoa::consulta_periodo_data(string date_inicial, string date_final)
 {
-    cout << "Teste" << endl;
+    vector<DataNameDate> data;
+    stringstream ss;
+    pair<string, string> dates;
+    dates.first = format_date(date_inicial, 3);
+    dates.second = format_date(date_final, 3);
+    ss << "Foram encontrados " << data.size() << " pessoas que estão entre esse período [" << date_inicial << " - " << date_final << "]";
+    avl_search_periodo_data(avl_data_date, dates, &data);
+    print_data_name(data, ss.str());
 }
 
 #endif

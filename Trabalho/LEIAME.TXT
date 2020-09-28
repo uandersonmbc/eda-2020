@@ -1,0 +1,37 @@
+Como compilar e executar o programa:
+    
+    Windows:
+        Na minha máquina uso o make do linux com o nome do arquivo
+
+        $ make main
+        ou
+        $ g++ main.cpp -o main
+
+        Para executar basta fazer a seguinte comando no terminal
+        $ main.exe
+
+    Linux:
+        Para compilar no Linux pode se usar o "make" com nome do arquivo "main"
+
+        $ make main
+        ou
+        $ g++ main.cpp -o main
+
+        Para executar basta fazer a seguinte comando no terminal
+        $ ./main
+
+O seguinte menu de opções aparecerá logo em seguida da execução o programa.
+
+--------------------------------------------------------------
+MENU:
+--------------------------------------------------------------
+
+[1] - Consultar por CPF
+[2] - Consultar por cadeias de caracteres
+[3] - Consultar por periodo de datas
+[4] - Sair
+
+Sempre que for fazer alguma ação de consulta lembre-se de seguir esses templates
+Template para 1 e 2 ----- [COMANDO] [INICIAIS]
+Template para o 3 ------- [COMANDO] [DD/MM/YYYY] [DD/MM/YYYY]
+Template para o 4 ------- [COMANDO]

@@ -20,9 +20,9 @@ void menu()
     cout << "[3] - Consultar por periodo de datas" << endl;
     cout << "[4] - Sair" << endl;
     cout << endl;
-    cout << "Sempre que for usar alguma ação lembre de seguir esse template" << endl;
-    cout << "Template para 1 e 2 ----- [COMANDO] [DADOS DE ENTRADA]" << endl;
-    cout << "Template para o 3 ------- [COMANDO] [YYYY/MM/DD] [YYYY/MM/DD]" << endl;
+    cout << "Sempre que for fazer alguma ação de consulta lembre-se de seguir esses templates" << endl;
+    cout << "Template para 1 e 2 ----- [COMANDO] [INICIAIS]" << endl;
+    cout << "Template para o 3 ------- [COMANDO] [DD/MM/YYYY] [DD/MM/YYYY]" << endl;
     cout << "Template para o 4 ------- [COMANDO]" << endl;
 }
 

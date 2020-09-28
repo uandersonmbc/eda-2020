@@ -14,30 +14,26 @@ struct NodeDate
     NodeDate *right;
 };
 
-void avl_search_todas_comece(NodeDate *node, string name, vector<DataNameDate> *data)
+void avl_search_periodo_data(NodeDate *node, pair<string, string> dates, vector<DataNameDate> *data)
 {
 
     if (node == NULL)
         return;
-    if (name < node->data.name.first.substr(0, name.size()))
-        avl_search_todas_comece(node->left, name, data);
-    else if (name > node->data.name.first.substr(0, name.size()))
-        avl_search_todas_comece(node->right, name, data);
+    if (dates.second < node->data.name.first)
+        avl_search_periodo_data(node->left, dates, data);
+    else if (dates.first > node->data.name.first)
+        avl_search_periodo_data(node->right, dates, data);
     else
     {
-        avl_search_todas_comece(node->left, name, data);
-        avl_search_todas_comece(node->right, name, data);
+        avl_search_periodo_data(node->left, dates, data);
+        avl_search_periodo_data(node->right, dates, data);
     }
 
-    size_t pos = 0;
-    string name_local = name, data_name = node->data.name.first;
-    std::transform(name_local.begin(), name_local.end(), name_local.begin(), [](unsigned char c) { return std::tolower(c); });
-    std::transform(data_name.begin(), data_name.end(), data_name.begin(), [](unsigned char c) { return std::tolower(c); });
+    string date = node->data.name.first;
 
-    pos = data_name.find(name_local);
-
-    if (pos != data_name.npos && pos == 0)
+    if (dates.first <= date && dates.second >= date)
     {
+        // cout << dates.first << " - " << dates.second << " - " << date << endl;
         (*data).push_back(node->data);
     }
 }
